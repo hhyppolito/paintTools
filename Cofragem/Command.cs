@@ -28,55 +28,54 @@ namespace Cofragem
             ICollection<ElementId> selectedIds = selection.GetElementIds();
             FilteredElementCollector walls = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsNotElementType();
             FilteredElementCollector floors = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_Floors).WhereElementIsNotElementType();
-            FilteredElementCollector beams = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_StructuralFraming).WhereElementIsNotElementType();
+            FilteredElementCollector beams = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_StructuralFraming);
             FilteredElementCollector columns = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_StructuralColumns).WhereElementIsNotElementType();
-            FilteredElementCollector genericmodels = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType();
             FilteredElementCollector foundations = new FilteredElementCollector(doc, selectedIds).OfCategory(BuiltInCategory.OST_StructuralFoundation).WhereElementIsNotElementType();
 
+            Form1 forme = new Form1();
+            forme.ShowDialog();
+
+            string material = Form1.Orders[0];
 
             Transaction curTrans = new Transaction(doc, "Cofragem");
             curTrans.Start();
 
-            IList<double> areas = new List<double>();
+            //start
 
-            foreach (Element i in genericmodels)
+            
+
+
+            foreach (Element wallElement in walls)
             {
-                GeometryElement geometryElement = i.get_Geometry(new Options());
-
-                foreach (GeometryObject geoObject in geometryElement)
-                {
-                    GeometryInstance geomInst = geoObject as GeometryInstance;
-
-                    if (null != geomInst)
-                    {
-                        GeometryElement transformedGeomElem = geomInst.GetInstanceGeometry(geomInst.Transform);
-
-                        foreach (GeometryObject geotransObject in transformedGeomElem)
-                        {
-                            Solid solid2 = geotransObject as Solid;
-                            foreach (Face face in solid2.Faces)
-                            {
-                                areas.Add(face.Area);
-                            }
-                        }
-
-                    }
-                }
+                //GeometryElement geometryElement = wallElement.get_Geometry(new Options());65464654654
+                Cofragem.FrameWall(wallElement, app, material) ;
             }
+            foreach (Element floorElement in floors)
+            {
+                //GeometryElement geometryElement = floorElement.get_Geometry(new Options());
+                Cofragem.FrameFloor(floorElement, app, material);
 
-            JoinElement.Join(foundations,walls, columns, beams, floors, genericmodels, doc);
+            }
+            foreach (Element beamElement in beams)
+            {
+                //GeometryElement geometryElement = beamElement.get_Geometry(new Options());
+                Cofragem.FrameBeam(beamElement, app, material);
 
-            curTrans.Commit();
-
-            curTrans.Start();
-
-            foreach (Element genericElement in genericmodels)
+            }
+            foreach (Element columnElement in columns)
             {
                 //GeometryElement geometryElement = columnElement.get_Geometry(new Options());
-                Cofragem.GenericElements(genericElement, areas, app);
-                doc.Delete(genericElement.Id);
+                Cofragem.FrameColumn(columnElement, app, material);
+
+            }
+            foreach (Element foundationsElement in foundations)
+            {
+                //GeometryElement geometryElement = columnElement.get_Geometry(new Options());
+                Cofragem.FrameColumn(foundationsElement, app, material);
+
             }
 
+            Form1.Orders.Clear();
             curTrans.Commit();
 
             return Result.Succeeded;

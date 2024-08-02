@@ -5,7 +5,7 @@
     <Description>Some description for Cofragem</Description>
     <Assembly>Cofragem.dll</Assembly>
     <FullClassName>Cofragem.Command</FullClassName>
-    <ClientId>f2f149e6-154d-482c-974a-7cd8f829d995</ClientId>
+    <ClientId>4e6a7dc1-7ac7-4be8-8bca-8b6eb7972fe8</ClientId>
     <VendorId>HFH</VendorId>
     <VendorDescription>HFH</VendorDescription>
   </AddIn>
@@ -13,8 +13,9 @@
     <Name>Application Cofragem</Name>
     <Assembly>Cofragem.dll</Assembly>
     <FullClassName>Cofragem.App</FullClassName>
-    <ClientId>6016ae80-3557-49ea-97b2-de2c88547738</ClientId>
+    <ClientId>a0b7396e-9391-4ac4-867f-0298c2fd218b</ClientId>
     <VendorId>HFH</VendorId>
     <VendorDescription>HFH</VendorDescription>
   </AddIn>
 </RevitAddIns>
+
