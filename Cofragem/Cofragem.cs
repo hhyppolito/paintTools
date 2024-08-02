@@ -110,7 +110,7 @@ namespace Cofragem
         }
 
 
-        //Paint Columns
+        //Paint Column
         public static void FrameColumn(Element columns, Application app, string material)
         {
             Document doc = columns.Document;
